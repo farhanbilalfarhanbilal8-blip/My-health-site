@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthScore - Advanced BMI & Calorie Calculator</title>
+    <meta name="description" content="Calculate your BMI and Daily Calorie needs with our free, accurate health tool. Stay fit and monitor your body mass index easily.">
+    <meta name="keywords" content="BMI Calculator, Calorie Needs, Weight Loss Tool, Fitness Calculator, HealthScore">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
+        body { 
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d); 
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: white; padding: 20px; line-height: 1.6;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .container { max-width: 900px; margin: auto; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px);
+            border-radius: 24px; padding: 35px; margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        h1 { font-size: 2.5rem; margin-bottom: 10px; letter-spacing: -1px; }
+        h2 { color: #fdbb2d; margin-bottom: 15px; font-weight: 500; }
+        .input-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; margin-bottom: 5px; font-size: 0.9rem; color: #eee; }
+        input, select {
+            width: 100%; padding: 14px; border-radius: 12px;
+            border: none; background: rgba(255, 255, 255, 0.15); color: white; font-size: 1rem;
+        }
+        input::placeholder { color: #ccc; }
+        button {
+            width: 100%; padding: 16px; border-radius: 12px; border: none;
+            background: #fff; color: #1a2a6c;
+            font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 1rem;
+        }
+        button:hover { background: #fdbb2d; color: #000; transform: translateY(-3px); }
+        .result-box { margin-top: 25px; font-size: 1.4rem; color: #00ffcc; font-weight: bold; padding: 15px; border-radius: 10px; background: rgba(0,0,0,0.2); }
+        .content-section { background: rgba(255, 255, 255, 0.95); color: #222; padding: 40px; border-radius: 24px; margin-top: 20px; }
+        .content-section h3 { color: #1a2a6c; margin-top: 20px; }
+        footer { text-align: center; margin-top: 50px; padding: 20px; font-size: 0.9rem; color: #ddd; }
+        .footer-links a { color: #fff; text-decoration: none; margin: 0 15px; opacity: 0.8; }
+        .footer-links a:hover { opacity: 1; text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="glass-card">
+        <h1>HealthScore AI</h1>
+        <p>Global Standard for BMI & Calorie Monitoring</p>
+    </div>
+
+    <div class="glass-card">
+        <h2>Body Mass Index (BMI)</h2>
+        <div class="input-group">
+            <label>Height (cm)</label>
+            <input type="number" id="height" placeholder="e.g. 175">
+        </div>
+        <div class="input-group">
+            <label>Weight (kg)</label>
+            <input type="number" id="weight" placeholder="e.g. 70">
+        </div>
+        <button onclick="calculateBMI()">Analyze My BMI</button>
+        <div id="bmiResult" class="result-box" style="display:none;"></div>
+    </div>
+
+    <div class="glass-card">
+        <h2>Daily Calorie Estimator</h2>
+        <div class="input-group">
+            <label>Biological Sex</label>
+            <select id="gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Age</label>
+            <input type="number" id="age" placeholder="e.g. 25">
+        </div>
+        <button onclick="calculateCalories()">Estimate Calories</button>
+        <div id="calResult" class="result-box" style="display:none;"></div>
+    </div>
+
+    <div class="content-section">
+        <h3>Understanding Your Results</h3>
+        <p>Your HealthScore is calculated based on globally recognized health metrics. BMI is a key indicator of body fatness and overall health risk.</p>
+        
+        <h3>BMI Categories:</h3>
+        <ul>
+            <li><strong>Below 18.5:</strong> Underweight</li>
+            <li><strong>18.5 – 24.9:</strong> Healthy Weight</li>
+            <li><strong>25.0 – 29.9:</strong> Overweight</li>
+            <li><strong>30.0 and Above:</strong> Obese</li>
+        </ul>
+
+        <h3>Why Monitoring Calories Matters?</h3>
+        <p>To maintain your current weight, your body needs a specific amount of energy (calories). If you want to lose weight, aim for a "Calorie Deficit" by eating slightly less than your result.</p>
+    </div>
+
+    <footer><footer>
+    <div class="footer-links">
+        <a href="#">About Us</a>
+        <a href="#">Privacy Policy</a>
+        <a href="mailto:farhanbilalfarhanbilal8@gmail.com">Contact: farhanbilalfarhanbilal8@gmail.com</a>
+    </div>
+    <p style="margin-top:20px;">© 2026 HealthScore Global Tools. All Rights Reserved.</p>
+    <p>Developed by Farhan Bilal</p>
+</footer>
+        <div class="footer-links">
+            <a href="#">About Us</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Support</a>
+        </div>
+        <p style="margin-top:20px;">© 2026 HealthScore Global Tools. All Rights Reserved.</p>
+        <p><small>Disclaimer: This tool provides estimates only. Always consult a medical professional for health advice.</small></p>
+    </footer>
+</div>
+
+<script>
+    function calculateBMI() {
+        const h = document.getElementById('height').value / 100;
+        const w = document.getElementById('weight').value;
+        const resultDiv = document.getElementById('bmiResult');
+        
+        if(h > 0 && w > 0) {
+            const bmi = (w / (h * h)).toFixed(1);
+            let category = "";
+            if(bmi < 18.5) category = "Underweight";
+            else if(bmi < 25) category = "Healthy";
+            else if(bmi < 30) category = "Overweight";
+            else category = "Obese";
+            
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `Your BMI: ${bmi} (${category})`;
+        } else {
+            alert("Please enter valid height and weight values.");
+        }
+    }
+
+    function calculateCalories() {
+        const age = document.getElementById('age').value;
+        const w = document.getElementById('weight').value;
+        const h = document.getElementById('height').value;
+        const resultDiv = document.getElementById('calResult');
+        
+        if(age > 0 && w > 0 && h > 0) {
+            // Mifflin-St Jeor Equation
+            let bmr = (10 * w) + (6.25 * h) - (5 * age);
+            if(document.getElementById('gender').value === 'male') bmr += 5;
+            else bmr -= 161;
+            
+            const maintenance = Math.round(bmr * 1.2);
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `Maintenance Calories: ~${maintenance} kcal / day`;
+        } else {
+            alert("Please fill in all fields (Age, Weight, and Height).");
+        }
+    }
+</script>
+
+</body>
+</html>
