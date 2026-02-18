@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="0ea6c0b098f6f1805790fdfca26ecc6aaa7c81ac" />
+    
     <title>HealthScore - Advanced BMI & Calorie Calculator</title>
     <meta name="description" content="Calculate your BMI and Daily Calorie needs with our free, accurate health tool. Stay fit and monitor your body mass index easily.">
     <meta name="keywords" content="BMI Calculator, Calorie Needs, Weight Loss Tool, Fitness Calculator, HealthScore">
@@ -105,23 +107,15 @@
         <p>To maintain your current weight, your body needs a specific amount of energy (calories). If you want to lose weight, aim for a "Calorie Deficit" by eating slightly less than your result.</p>
     </div>
 
-    <footer><footer>
-    <div class="footer-links">
-        <a href="#">About Us</a>
-        <a href="#">Privacy Policy</a>
-        <a href="mailto:farhanbilalfarhanbilal8@gmail.com">Contact: farhanbilalfarhanbilal8@gmail.com</a>
-    </div>
-    <p style="margin-top:20px;">© 2026 HealthScore Global Tools. All Rights Reserved.</p>
-    <p>Developed by Farhan Bilal</p>
-</footer>
+    <footer>
         <div class="footer-links">
-            <a href="#">About Us</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">Contact Support</a>
+            <a href="#">About Us</a> | 
+            <a href="#">Privacy Policy</a> | 
+            <a href="mailto:farhanbilalfarhanbilal8@gmail.com">Contact</a>
         </div>
         <p style="margin-top:20px;">© 2026 HealthScore Global Tools. All Rights Reserved.</p>
-        <p><small>Disclaimer: This tool provides estimates only. Always consult a medical professional for health advice.</small></p>
+        <p>Developed by Farhan Bilal</p>
+        <p><small>Disclaimer: This tool provides estimates only. Always consult a medical professional.</small></p>
     </footer>
 </div>
 
@@ -153,7 +147,6 @@
         const resultDiv = document.getElementById('calResult');
         
         if(age > 0 && w > 0 && h > 0) {
-            // Mifflin-St Jeor Equation
             let bmr = (10 * w) + (6.25 * h) - (5 * age);
             if(document.getElementById('gender').value === 'male') bmr += 5;
             else bmr -= 161;
