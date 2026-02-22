@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Istanbul Restaurant | Premium Turkish Dining in Karachi</title>
+    <meta name="description" content="Experience authentic Turkish flavors at Istanbul Restaurant, Karachi's premier luxury dining destination. Open 7 PM - 3 AM.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            100: '#F9F1D8',
+                            200: '#F0DEAA',
+                            300: '#E6CB7D',
+                            400: '#DDB850',
+                            500: '#D4A532',
+                            600: '#AA8428',
+                            700: '#80631E',
+                            800: '#554214',
+                            900: '#2B210A',
+                        },
+                        dark: {
+                            900: '#0a0a0a',
+                            800: '#121212',
+                            700: '#1a1a1a',
+                            600: '#2a2a2a',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #F9F1D8;
+            overflow-x: hidden;
+            cursor: none;
+        }
+        
+        .custom-cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #D4A532;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s;
+            mix-blend-mode: difference;
+        }
+        
+        .cursor-dot {
+            width: 4px;
+            height: 4px;
+            background: #D4A532;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
+        .cursor-hover {
+            transform: scale(2);
+            background: rgba(212, 165, 50, 0.1);
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 165, 50, 0.1);
+        }
+        
+        .glass-strong {
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 165, 50, 0.2);
+        }
+        
+        .text-glow {
+            text-shadow: 0 0 20px rgba(212, 165, 50, 0.5);
+        }
+        
+        .gold-gradient {
+            background: linear-gradient(135deg, #D4A532 0%, #F0DEAA 50%, #D4A532 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .btn-luxury {
+            background: linear-gradient(135deg, #D4A532 0%, #AA8428 100%);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-luxury::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-luxury:hover::before {
+            left: 100%;
+        }
+        
+        .btn-luxury:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 165, 50, 0.4);
+        }
+        
+        .btn-outline {
+            border: 1px solid #D4A532;
+            color: #D4A532;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline:hover {
+            background: #D4A532;
+            color: #0a0a0a;
+            transform: translateY(-2px);
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #D4A532;
+            border-radius: 50%;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        
+        .menu-card {
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+        
+        .menu-card:hover {
+            transform: rotateY(10deg) rotateX(5deg) translateZ(20px);
+        }
+        
+        .star-gold {
+            color: #D4A532;
+            filter: drop-shadow(0 0 5px rgba(212, 165, 50, 0.8));
+        }
+        
+        .parallax-layer {
+            will-change: transform;
+        }
+        
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .ottoman-emblem {
+            width: 120px;
+            height: 120px;
+            border: 3px solid #D4A532;
+            border-radius: 50%;
+            position: relative;
+            animation: rotate 3s linear infinite;
+        }
+        
+        .ottoman-emblem::before {
+            content: '☪';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
+            color: #D4A532;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .reveal-text {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .nav-hidden {
+            transform: translateY(-100%);
+        }
+        
+        .nav-visible {
+            transform: translateY(0);
+        }
+        
+        .gradient-mesh {
+            background: 
+                radial-gradient(at 40% 20%, rgba(212, 165, 50, 0.15) 0px, transparent 50%),
+                radial-gradient(at 80% 0%, rgba(170, 132, 40, 0.1) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, rgba(212, 165, 50, 0.1) 0px, transparent 50%);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-gold-500 selection:text-dark-900">
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor hidden md:block"></div>
+    <div class="cursor-dot hidden md:block"></div>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="ottoman-emblem mb-8"></div>
+        <h2 class="font-serif text-2xl text-gold-400 tracking-widest">ISTANBUL</h2>
+        <p class="text-gold-600 text-sm mt-2 tracking-widest">RESTAURANT</p>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-transform duration-500 nav-hidden">
+        <div class="glass-strong px-6 lg:px-12 py-4">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <a href="#" class="font-serif text-2xl font-bold gold-gradient">ISTANBUL</a>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#about" class="text-gold-100 hover:text-gold-400 transition-colors text-sm tracking-wider">ABOUT</a>
+                    <a href="#menu" class="text-gold-100 hover:text-gold-400 transition-colors text-sm tracking-wider">MENU</a>
+                    <a href="#reviews" class="text-gold-100 hover:text-gold-400 transition-colors text-sm tracking-wider">REVIEWS</a>
+                    <a href="#location" class="text-gold-100 hover:text-gold-400 transition-colors text-sm tracking-wider">LOCATION</a>
+                </div>
+
+                <a href="#reservation" class="btn-luxury px-6 py-2 rounded-full text-sm font-semibold text-dark-900">
+                    Reserve Table
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative h-screen w-full overflow-hidden gradient-mesh">
+        <!-- Three.js Canvas -->
+        <canvas id="hero-canvas" class="absolute inset-0 w-full h-full"></canvas>
+        
+        <!-- Particle Container -->
+        <div id="particles" class="absolute inset-0 pointer-events-none"></div>
+
+        <!-- Hero Content -->
+        <div class="relative z-10 h-full flex items-center justify-center px-6">
+            <div class="text-center max-w-5xl mx-auto">
+                <div class="reveal-text mb-4">
+                    <span class="text-gold-400 tracking-[0.3em] text-sm font-medium">KARACHI'S PREMIER TURKISH DESTINATION</span>
+                </div>
+                
+                <h1 class="reveal-text font-serif text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">
+                    <span class="gold-gradient italic">Experience</span><br>
+                    <span class="text-gold-100">Authentic Turkish</span><br>
+                    <span class="gold-gradient">Flavors</span>
+                </h1>
+                
+                <p class="reveal-text text-gold-200/80 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light">
+                    Indulge in the rich culinary heritage of Turkey, crafted with passion and served in an atmosphere of pure luxury.
+                </p>
+
+                <div class="reveal-text flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="#menu" class="btn-luxury px-8 py-4 rounded-full text-dark-900 font-semibold tracking-wide flex items-center gap-2 group">
+                        <span>View Menu</span>
+                        <i data-lucide="utensils" class="w-4 h-4 group-hover:rotate-12 transition-transform"></i>
+                    </a>
+                    <a href="#reservation" class="btn-outline px-8 py-4 rounded-full font-semibold tracking-wide flex items-center gap-2 group">
+                        <span>Book a Table</span>
+                        <i data-lucide="calendar" class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
+                    </a>
+                    <a href="https://www.foodpanda.pk" target="_blank" class="btn-outline px-8 py-4 rounded-full font-semibold tracking-wide flex items-center gap-2 group border-red-500 text-red-400 hover:bg-red-500 hover:text-white">
+                        <span>Order Online</span>
+                        <i data-lucide="bike" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+
+                <div class="reveal-text mt-12 flex items-center justify-center gap-2 text-gold-400">
+                    <div class="flex">
+                        <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                        <i data-lucide="star-half" class="w-5 h-5 fill-current"></i>
+                    </div>
+                    <span class="text-gold-100 font-semibold">4.4</span>
+                    <span class="text-gold-600 text-sm">(513 reviews)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i data-lucide="chevron-down" class="w-6 h-6 text-gold-400"></i>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="relative py-24 px-6 lg:px-12 gradient-mesh">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal-text">
+                    <span class="text-gold-400 tracking-widest text-sm font-semibold mb-4 block">OUR STORY</span>
+                    <h2 class="font-serif text-4xl md:text-5xl font-bold mb-6 text-gold-100">
+                        A Journey from <span class="gold-gradient italic">Istanbul</span> to <span class="gold-gradient italic">Karachi</span>
+                    </h2>
+                    <p class="text-gold-200/70 text-lg leading-relaxed mb-6">
+                        Nestled in the heart of North Nazimabad, Istanbul Restaurant brings the authentic taste of Turkish cuisine to Pakistan. Our chefs, trained in the traditional kitchens of Istanbul, craft each dish with recipes passed down through generations.
+                    </p>
+                    <p class="text-gold-200/70 text-lg leading-relaxed mb-8">
+                        From the sizzling kebabs of Adana to the sweet layers of Kunafa, every bite tells a story of cultural fusion and culinary excellence. Our opulent interiors, inspired by Ottoman architecture, provide the perfect backdrop for an unforgettable dining experience.
+                    </p>
+                    
+                    <div class="grid grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <div class="text-3xl font-serif font-bold gold-gradient mb-1">10+</div>
+                            <div class="text-gold-400/60 text-sm">Years Experience</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-serif font-bold gold-gradient mb-1">50+</div>
+                            <div class="text-gold-400/60 text-sm">Turkish Dishes</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-serif font-bold gold-gradient mb-1">4.4</div>
+                            <div class="text-gold-400/60 text-sm">Google Rating</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-4 mt-8">
+                            <div class="glass rounded-2xl overflow-hidden h-64 transform hover:scale-105 transition-transform duration-500">
+                                <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&h=800&fit=crop" alt="Luxury Interior" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity">
+                            </div>
+                            <div class="glass rounded-2xl overflow-hidden h-48 transform hover:scale-105 transition-transform duration-500">
+                                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&h=400&fit=crop" alt="Dining Area" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity">
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="glass rounded-2xl overflow-hidden h-48 transform hover:scale-105 transition-transform duration-500">
+                                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&h=400&fit=crop" alt="Turkish Decor" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity">
+                            </div>
+                            <div class="glass rounded-2xl overflow-hidden h-64 transform hover:scale-105 transition-transform duration-500">
+                                <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=600&h=800&fit=crop" alt="Food Presentation" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Decorative Element -->
+                    <div class="absolute -z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border border-gold-500/20 rounded-full"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="relative py-24 px-6 lg:px-12 bg-dark-800">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 reveal-text">
+                <span class="text-gold-400 tracking-widest text-sm font-semibold mb-4 block">CULINARY EXCELLENCE</span>
+                <h2 class="font-serif text-4xl md:text-5xl font-bold text-gold-100 mb-4">Our Menu</h2>
+                <p class="text-gold-200/60 max-w-2xl mx-auto">Discover our carefully curated selection of authentic Turkish dishes</p>
+            </div>
+
+            <!-- Category Tabs -->
+            <div class="flex justify-center gap-4 mb-12 flex-wrap reveal-text">
+                <button class="menu-tab active px-6 py-2 rounded-full border border-gold-500 bg-gold-500 text-dark-900 font-semibold transition-all" data-category="bbq">BBQ & Grill</button>
+                <button class="menu-tab px-6 py-2 rounded-full border border-gold-500/30 text-gold-400 hover:border-gold-500 transition-all" data-category="platters">Platters</button>
+                <button class="menu-tab px-6 py-2 rounded-full border border-gold-500/30 text-gold-400 hover:border-gold-500 transition-all" data-category="desserts">Desserts</button>
+                <button class="menu-tab px-6 py-2 rounded-full border border-gold-500/30 text-gold-400 hover:border-gold-500 transition-all" data-category="beverages">Beverages</button>
+            </div>
+
+            <!-- Menu Grid -->
+            <div id="menu-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Menu items will be populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="relative py-24 px-6 lg:px-12 gradient-mesh overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 reveal-text">
+                <span class="text-gold-400 tracking-widest text-sm font-semibold mb-4 block">TESTIMONIALS</span>
+                <h2 class="font-serif text-4xl md:text-5xl font-bold text-gold-100 mb-4">What Our Guests Say</h2>
+                <div class="flex items-center justify-center gap-2 mb-2">
+                    <span class="text-5xl font-serif font-bold gold-gradient">4.4</span>
+                    <div class="flex flex-col items-start ml-4">
+                        <div class="flex gap-1 mb-1">
+                            <i data-lucide="star" class="w-6 h-6 star-gold fill-current"></i>
+                            <i data-lucide="star" class="w-6 h-6 star-gold fill-current"></i>
+                            <i data-lucide="star" class="w-6 h-6 star-gold fill-current"></i>
+                            <i data-lucide="star" class="w-6 h-6 star-gold fill-current"></i>
+                            <i data-lucide="star-half" class="w-6 h-6 star-gold fill-current"></i>
+                        </div>
+                        <span class="text-gold-400/60 text-sm">Based on 513 reviews</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews Carousel -->
+            <div class="relative">
+                <div id="reviews-container" class="flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide" style="scrollbar-width: none; -ms-overflow-style: none;">
+                    <!-- Reviews populated by JS -->
+                </div>
+                
+                <!-- Navigation Arrows -->
+                <button id="prev-review" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-12 h-12 rounded-full glass flex items-center justify-center text-gold-400 hover:bg-gold-500 hover:text-dark-900 transition-all z-10">
+                    <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                </button>
+                <button id="next-review" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-12 h-12 rounded-full glass flex items-center justify-center text-gold-400 hover:bg-gold-500 hover:text-dark-900 transition-all z-10">
+                    <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="relative py-24 px-6 lg:px-12 bg-dark-800">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 reveal-text">
+                <span class="text-gold-400 tracking-widest text-sm font-semibold mb-4 block">OUR SERVICES</span>
+                <h2 class="font-serif text-4xl md:text-5xl font-bold text-gold-100">Dine Your Way</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Dine In -->
+                <div class="glass rounded-3xl p-8 text-center group hover:bg-gold-500/10 transition-all duration-500 reveal-text">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gold-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i data-lucide="utensils-crossed" class="w-10 h-10 text-gold-400"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl font-bold text-gold-100 mb-4">Dine-In</h3>
+                    <p class="text-gold-200/60 mb-6">Experience our luxurious Ottoman-inspired ambiance with full table service and authentic Turkish hospitality.</p>
+                    <div class="text-gold-400 text-sm font-semibold">7:00 PM - 3:00 AM</div>
+                </div>
+
+                <!-- Takeout -->
+                <div class="glass rounded-3xl p-8 text-center group hover:bg-gold-500/10 transition-all duration-500 reveal-text">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gold-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i data-lucide="package" class="w-10 h-10 text-gold-400"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl font-bold text-gold-100 mb-4">Takeout</h3>
+                    <p class="text-gold-200/60 mb-6">Order your favorite Turkish dishes packed with care, ready for you to enjoy at home or on the go.</p>
+                    <div class="text-gold-400 text-sm font-semibold">Quick Pickup</div>
+                </div>
+
+                <!-- Delivery -->
+                <div class="glass rounded-3xl p-8 text-center group hover:bg-gold-500/10 transition-all duration-500 reveal-text">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gold-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i data-lucide="bike" class="w-10 h-10 text-gold-400"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl font-bold text-gold-100 mb-4">Delivery</h3>
+                    <p class="text-gold-200/60 mb-6">Hot, fresh Turkish cuisine delivered to your doorstep via Foodpanda across Karachi.</p>
+                    <a href="https://www.foodpanda.pk" target="_blank" class="inline-flex items-center gap-2 text-gold-400 hover:text-gold-300 font-semibold text-sm mt-2">
+                        Order via Foodpanda <i data-lucide="external-link" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location & Contact -->
+    <section id="location" class="relative py-24 px-6 lg:px-12 gradient-mesh">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Contact Info -->
+                <div class="reveal-text">
+                    <span class="text-gold-400 tracking-widest text-sm font-semibold mb-4 block">VISIT US</span>
+                    <h2 class="font-serif text-4xl md:text-5xl font-bold text-gold-100 mb-8">Find Us</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-full bg-gold-500/10 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="map-pin" class="w-5 h-5 text-gold-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-gold-100 font-semibold mb-1">Address</h4>
+                                <p class="text-gold-200/70">B 73, Block L North Nazimabad Town<br>Karachi, Pakistan</p>
+                                <p class="text-gold-400/60 text-sm mt-1">Code: W3Q3+8G</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-full bg-gold-500/10 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="phone" class="w-5 h-5 text-gold-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-gold-100 font-semibold mb-1">Phone</h4>
+                                <a href="tel:+923322777788" class="text-gold-200/70 hover:text-gold-400 transition-colors">+92 332 2777788</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-full bg-gold-500/10 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="clock" class="w-5 h-5 text-gold-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-gold-100 font-semibold mb-1">Opening Hours</h4>
+                                <p class="text-gold-200/70">Open Daily: 7:00 PM - 3:00 AM</p>
+                                <p class="text-gold-400/60 text-sm">Late night dining available</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 flex gap-4">
+                        <a href="https://maps.google.com/?q=W3Q3+8G+North+Nazimabad+Town+Karachi" target="_blank" class="btn-luxury px-6 py-3 rounded-full text-dark-900 font-semibold flex items-center gap-2">
+                            <i data-lucide="navigation" class="w-4 h-4"></i>
+                            Get Directions
+                        </a>
+                        <a href="tel:+923322777788" class="btn-outline px-6 py-3 rounded-full font-semibold flex items-center gap-2">
+                            <i data-lucide="phone" class="w-4 h-4"></i>
+                            Call Now
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Map -->
+                <div class="reveal-text h-[400px] lg:h-auto rounded-3xl overflow-hidden glass p-2">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3618.1234567890123!2d67.0351!3d24.9276!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjTCsDU1JzM5LjQiTiA2N8KwMDInMDYuNCJF!5e0!3m2!1sen!2s!4v1234567890" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0; border-radius: 24px; filter: invert(90%) hue-rotate(180deg);" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reservation Section -->
+    <section id="reservation" class="relative py-24 px-6 lg:px-12 bg-dark-800">
+        <div class="max-w-4xl mx-auto">
+            <div class="glass-strong rounded-3xl p-8 md:p-12 reveal-text">
+                <div class="text-center mb-8">
+                    <span class="text-gold-400 tracking-widest text-sm font-semibold mb-4 block">RESERVATIONS</span>
+                    <h2 class="font-serif text-3xl md:text-4xl font-bold text-gold-100 mb-4">Book Your Table</h2>
+                    <p class="text-gold-200/60">Reserve your spot for an unforgettable Turkish dining experience</p>
+                </div>
+
+                <form id="reservation-form" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gold-400 text-sm font-semibold mb-2">Name</label>
+                            <input type="text" required class="w-full bg-dark-900/50 border border-gold-500/30 rounded-lg px-4 py-3 text-gold-100 focus:border-gold-500 focus:outline-none transition-colors" placeholder="Your name">
+                        </div>
+                        <div>
+                            <label class="block text-gold-400 text-sm font-semibold mb-2">Phone</label>
+                            <input type="tel" required class="w-full bg-dark-900/50 border border-gold-500/30 rounded-lg px-4 py-3 text-gold-100 focus:border-gold-500 focus:outline-none transition-colors" placeholder="+92 XXX XXXXXXX">
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gold-400 text-sm font-semibold mb-2">Date</label>
+                            <input type="date" required class="w-full bg-dark-900/50 border border-gold-500/30 rounded-lg px-4 py-3 text-gold-100 focus:border-gold-500 focus:outline-none transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-gold-400 text-sm font-semibold mb-2">Time</label>
+                            <select required class="w-full bg-dark-900/50 border border-gold-500/30 rounded-lg px-4 py-3 text-gold-100 focus:border-gold-500 focus:outline-none transition-colors">
+                                <option value="">Select time</option>
+                                <option value="19:00">7:00 PM</option>
+                                <option value="19:30">7:30 PM</option>
+                                <option value="20:00">8:00 PM</option>
+                                <option value="20:30">8:30 PM</option>
+                                <option value="21:00">9:00 PM</option>
+                                <option value="21:30">9:30 PM</option>
+                                <option value="22:00">10:00 PM</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-gold-400 text-sm font-semibold mb-2">Number of Guests</label>
+                        <select required class="w-full bg-dark-900/50 border border-gold-500/30 rounded-lg px-4 py-3 text-gold-100 focus:border-gold-500 focus:outline-none transition-colors">
+                            <option value="">Select guests</option>
+                            <option value="2">2 People</option>
+                            <option value="4">4 People</option>
+                            <option value="6">6 People</option>
+                            <option value="8">8+ People</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="w-full btn-luxury py-4 rounded-lg text-dark-900 font-bold text-lg tracking-wide">
+                        Confirm Reservation
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative bg-dark-900 border-t border-gold-500/20 pt-16 pb-8 px-6 lg:px-12">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <div class="md:col-span-2">
+                    <h3 class="font-serif text-3xl font-bold gold-gradient mb-4">ISTANBUL</h3>
+                    <p class="text-gold-200/60 mb-6 max-w-md">Experience the authentic taste of Turkey in the heart of Karachi. Premium Turkish cuisine served with Ottoman hospitality.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gold-400 hover:bg-gold-500 hover:text-dark-900 transition-all">
+                            <i data-lucide="facebook" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gold-400 hover:bg-gold-500 hover:text-dark-900 transition-all">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gold-400 hover:bg-gold-500 hover:text-dark-900 transition-all">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-gold-100 font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#about" class="text-gold-200/60 hover:text-gold-400 transition-colors">About Us</a></li>
+                        <li><a href="#menu" class="text-gold-200/60 hover:text-gold-400 transition-colors">Menu</a></li>
+                        <li><a href="#reviews" class="text-gold-200/60 hover:text-gold-400 transition-colors">Reviews</a></li>
+                        <li><a href="#location" class="text-gold-200/60 hover:text-gold-400 transition-colors">Location</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-gold-100 font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gold-200/60">
+                        <li>B 73, Block L</li>
+                        <li>North Nazimabad</li>
+                        <li>Karachi, Pakistan</li>
+                        <li class="pt-2">+92 332 2777788</li>
+                        <li>7:00 PM - 3:00 AM</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gold-500/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gold-400/40 text-sm">&copy; 2024 Istanbul Restaurant. All rights reserved.</p>
+                <a href="https://www.foodpanda.pk" target="_blank" class="flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors">
+                    <span class="text-sm">Order on Foodpanda</span>
+                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Preloader
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            gsap.to(preloader, {
+                opacity: 0,
+                duration: 1,
+                delay: 2,
+                onComplete: () => {
+                    preloader.style.display = 'none';
+                    initAnimations();
+                }
+            });
+        });
+
+        // Custom Cursor
+        const cursor = document.querySelector('.custom-cursor');
+        const cursorDot = document.querySelector('.cursor-dot');
+        
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, {
+                x: e.clientX - 10,
+                y: e.clientY - 10,
+                duration: 0.1
+            });
+            gsap.to(cursorDot, {
+                x: e.clientX - 2,
+                y: e.clientY - 2,
+                duration: 0.5
+            });
+        });
+
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('cursor-hover'));
+        });
+
+        // Three.js Hero Scene
+        function initThreeJS() {
+            const canvas = document.getElementById('hero-canvas');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Create floating geometric shapes (representing Turkish lanterns/decor)
+            const geometries = [];
+            const material = new THREE.MeshStandardMaterial({
+                color: 0xD4A532,
+                metalness: 0.8,
+                roughness: 0.2,
+                emissive: 0xAA8428,
+                emissiveIntensity: 0.2
+            });
+
+            // Create lanterns
+            for (let i = 0; i < 15; i++) {
+                const geometry = new THREE.SphereGeometry(Math.random() * 0.5 + 0.2, 32, 32);
+                const mesh = new THREE.Mesh(geometry, material);
+                
+                mesh.position.x = (Math.random() - 0.5) * 20;
+                mesh.position.y = (Math.random() - 0.5) * 20;
+                mesh.position.z = (Math.random() - 0.5) * 10 - 5;
+                
+                mesh.userData = {
+                    speedX: (Math.random() - 0.5) * 0.01,
+                    speedY: (Math.random() - 0.5) * 0.01,
+                    speedZ: (Math.random() - 0.5) * 0.01
+                };
+                
+                scene.add(mesh);
+                geometries.push(mesh);
+            }
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            
+            const pointLight = new THREE.PointLight(0xD4A532, 1, 100);
+            pointLight.position.set(0, 0, 10);
+            scene.add(pointLight);
+
+            camera.position.z = 5;
+
+            // Animation
+            let mouseX = 0;
+            let mouseY = 0;
+
+            document.addEventListener('mousemove', (e) => {
+                mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+                mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+            });
+
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                geometries.forEach((mesh, i) => {
+                    mesh.rotation.x += mesh.userData.speedX;
+                    mesh.rotation.y += mesh.userData.speedY;
+                    mesh.position.y += Math.sin(Date.now() * 0.001 + i) * 0.002;
+                    
+                    // Subtle mouse interaction
+                    mesh.position.x += (mouseX * 0.5 - mesh.position.x) * 0.01;
+                    mesh.position.y += (mouseY * 0.5 - mesh.position.y) * 0.01;
+                });
+                
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+
+        // Particle System
+        function initParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 20 + 10) + 's';
+                particle.style.opacity = Math.random() * 0.5;
+                container.appendChild(particle);
+                
+                gsap.to(particle, {
+                    y: -100,
+                    x: (Math.random() - 0.5) * 100,
+                    duration: Math.random() * 20 + 10,
+                    repeat: -1,
+                    ease: "none",
+                    delay: Math.random() * 5
+                });
+            }
+        }
+
+        // Menu Data
+        const menuData = {
+            bbq: [
+                { name: "Adana Kebab", price: "PKR 1,450", desc: "Hand-minced lamb kebab with spices, grilled on skewers", image: "https://images.unsplash.com/photo-1603360946369-dc9bb6f54262?w=400&h=300&fit=crop" },
+                { name: "Shish Kebab", price: "PKR 1,650", desc: "Tender cubes of marinated lamb grilled to perfection", image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=300&fit=crop" },
+                { name: "Chicken Tikka", price: "PKR 1,250", desc: "Yogurt-marinated chicken chunks with Turkish spices", image: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&h=300&fit=crop" },
+                { name: "Mixed Grill Platter", price: "PKR 3,500", desc: "Assortment of our finest grilled meats for sharing", image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=300&fit=crop" },
+                { name: "Lamb Chops", price: "PKR 2,200", desc: "Premium lamb chops with herbs and garlic butter", image: "https://images.unsplash.com/photo-1546833998-877b37c2e5c6?w=400&h=300&fit=crop" },
+                { name: "Turkish Kofte", price: "PKR 1,350", desc: "Traditional spiced meatballs with tomato sauce", image: "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400&h=300&fit=crop" }
+            ],
+            platters: [
+                { name: "Sultan Platter", price: "PKR 4,500", desc: "Royal feast with mixed kebabs, rice, and sides", image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=300&fit=crop" },
+                { name: "Family Feast", price: "PKR 6,500", desc: "Complete meal for 4-6 people with variety of dishes", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=300&fit=crop" },
+                { name: "Vegetarian Platter", price: "PKR 2,800", desc: "Grilled vegetables, falafel, hummus, and pita", image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop" }
+            ],
+            desserts: [
+                { name: "Kunafa", price: "PKR 850", desc: "Sweet cheese pastry soaked in syrup with pistachios", image: "https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&h=300&fit=crop" },
+                { name: "Baklava", price: "PKR 750", desc: "Layered filo pastry with chopped nuts and honey", image: "https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&h=300&fit=crop" },
+                { name: "Turkish Delight", price: "PKR 450", desc: "Traditional lokum with rose flavor", image: "https://images.unsplash.com/photo-1543253687-c931c8e01820?w=400&h=300&fit=crop" },
+                { name: "Sütlaç", price: "PKR 550", desc: "Creamy Turkish rice pudding with cinnamon", image: "https://images.unsplash.com/photo-1549396535-c11d5c55b9df?w=400&h=300&fit=crop" }
+            ],
+            beverages: [
+                { name: "Turkish Tea", price: "PKR 150", desc: "Traditional çay served in Turkish glasses", image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400&h=300&fit=crop" },
+                { name: "Turkish Coffee", price: "PKR 250", desc: "Authentic cezve-brewed coffee with foam", image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&h=300&fit=crop" },
+                { name: "Ayran", price: "PKR 180", desc: "Refreshing yogurt drink with mint", image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&h=300&fit=crop" },
+                { name: "Fresh Juice", price: "PKR 350", desc: "Seasonal fresh fruit juices", image: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=400&h=300&fit=crop" }
+            ]
+        };
+
+        // Render Menu
+        function renderMenu(category) {
+            const grid = document.getElementById('menu-grid');
+            grid.innerHTML = '';
+            
+            menuData[category].forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'menu-card glass rounded-2xl overflow-hidden group cursor-pointer';
+                card.innerHTML = `
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark-900 to-transparent opacity-60"></div>
+                        <div class="absolute bottom-4 left-4 right-4">
+                            <h3 class="font-serif text-xl font-bold text-gold-100">${item.name}</h3>
+                            <p class="text-gold-400 font-semibold">${item.price}</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gold-200/60 text-sm mb-4">${item.desc}</p>
+                        <button class="w-full py-2 rounded-lg border border-gold-500/30 text-gold-400 hover:bg-gold-500 hover:text-dark-900 transition-all text-sm font-semibold flex items-center justify-center gap-2 group-btn">
+                            <span>Add to Order</span>
+                            <i data-lucide="plus" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                `;
+                
+                gsap.from(card, {
+                    opacity: 0,
+                    y: 30,
+                    duration: 0.5,
+                    delay: index * 0.1
+                });
+                
+                grid.appendChild(card);
+            });
+            
+            lucide.createIcons();
+        }
+
+        // Menu Tabs
+        document.querySelectorAll('.menu-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.menu-tab').forEach(t => {
+                    t.classList.remove('active', 'bg-gold-500', 'text-dark-900');
+                    t.classList.add('text-gold-400');
+                });
+                tab.classList.add('active', 'bg-gold-500', 'text-dark-900');
+                tab.classList.remove('text-gold-400');
+                renderMenu(tab.dataset.category);
+            });
+        });
+
+        // Reviews Data
+        const reviews = [
+            { name: "Ahmed Khan", rating: 5, text: "Best Turkish food in Karachi! The Adana kebab was perfectly spiced and the ambiance is absolutely luxurious.", avatar: "AK" },
+            { name: "Fatima Ali", rating: 5, text: "An unforgettable dining experience. The kunafa here is better than what I had in Istanbul!", avatar: "FA" },
+            { name: "Bilal Hussain", rating: 4, text: "Great food and excellent service. The interior design makes you feel like you're in a palace.", avatar: "BH" },
+            { name: "Sana Tariq", rating: 5, text: "Perfect for special occasions. The mixed grill platter is a must-try for meat lovers.", avatar: "ST" },
+            { name: "Omar Farooq", rating: 4, text: "Authentic flavors, generous portions. A bit pricey but worth every penny for the quality.", avatar: "OF" }
+        ];
+
+        // Render Reviews
+        function renderReviews() {
+            const container = document.getElementById('reviews-container');
+            
+            reviews.forEach((review, index) => {
+                const card = document.createElement('div');
+                card.className = 'flex-shrink-0 w-full md:w-96 glass rounded-2xl p-6 snap-center';
+                card.innerHTML = `
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-400 font-bold">
+                            ${review.avatar}
+                        </div>
+                        <div>
+                            <h4 class="text-gold-100 font-semibold">${review.name}</h4>
+                            <div class="flex gap-1">
+                                ${Array(review.rating).fill('<i data-lucide="star" class="w-4 h-4 star-gold fill-current"></i>').join('')}
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gold-200/70 italic">"${review.text}"</p>
+                `;
+                container.appendChild(card);
+            });
+            
+            lucide.createIcons();
+        }
+
+        // Review Navigation
+        document.getElementById('prev-review').addEventListener('click', () => {
+            document.getElementById('reviews-container').scrollBy({ left: -400, behavior: 'smooth' });
+        });
+        
+        document.getElementById('next-review').addEventListener('click', () => {
+            document.getElementById('reviews-container').scrollBy({ left: 400, behavior: 'smooth' });
+        });
+
+        // Navigation Scroll Effect
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                navbar.classList.remove('nav-hidden');
+                navbar.classList.add('nav-visible');
+            } else {
+                navbar.classList.add('nav-hidden');
+                navbar.classList.remove('nav-visible');
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // GSAP Animations
+        function initAnimations() {
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Hero text reveal
+            gsap.to('.reveal-text', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                stagger: 0.2,
+                ease: "power3.out"
+            });
+            
+            // Scroll triggered reveals
+            gsap.utils.toArray('.reveal-text').forEach(element => {
+                gsap.fromTo(element, 
+                    { opacity: 0, y: 30 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: element,
+                            start: "top 85%",
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+        }
+
+        // Form Submission
+        document.getElementById('reservation-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<span class="flex items-center justify-center gap-2"><i data-lucide="check" class="w-5 h-5"></i> Reservation Confirmed!</span>';
+            btn.classList.remove('btn-luxury');
+            btn.classList.add('bg-green-600', 'text-white');
+            
+            lucide.createIcons();
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.add('btn-luxury');
+                btn.classList.remove('bg-green-600', 'text-white');
+                e.target.reset();
+            }, 3000);
+        });
+
+        // Initialize
+        initThreeJS();
+        initParticles();
+        renderMenu('bbq');
+        renderReviews();
+    </script>
+</body>
+</html>
